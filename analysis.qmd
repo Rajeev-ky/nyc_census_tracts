@@ -1,0 +1,46 @@
+---
+title: "Census tracts"
+author: "Rajeev Kumar Yadav"
+format: html
+execute: 
+  echo: false
+---
+
+```{r}
+#| label: setup
+#| message: false
+
+library(tidyverse)
+library(ggbeeswarm)
+```
+
+```{r}
+x <- read_csv("data/nyc_tracts.csv", show_col_types = FALSE)
+```
+
+```{r}
+#| label: plot
+
+x |> 
+  drop_na() |> 
+  ggplot(aes(x = med_income, y = race, color = med_income)) +
+  geom_quasirandom(orientation = 'y') +
+  scale_color_viridis_c() +
+  scale_x_continuous(labels = scales::label_dollar()) +
+  theme(legend.position = "none") +
+  labs(
+    title = "Household income distribution by largest racial/ethnic group",
+    subtitle = "Census tracts, New York City",
+    x = "Median household income",
+    y = "Largest group in Census tract",
+    caption = "Data source: 2016-2020 ACS"
+  )+
+  theme(
+    plot.title = element_text(face = "bold", size = 15), ## making title bold
+    plot.subtitle = element_text(face = "italic", size = 10),  ## making subtitle italics
+    plot.caption = element_text(face = "italic", size = 9),  ## making caption italics
+    axis.title = element_text(face = "bold"),  ## making axis title bold
+    axis.text = element_text(face = "bold", size = 8)  ## making axis labels bold
+  )
+```
+
